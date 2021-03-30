@@ -10,11 +10,11 @@ public class Throwable : Grabbable
     private Queue<Vector3> previousVelocities = new Queue<Vector3>();
     private FixedJoint joint;
     private Vector3 prevPosition;
-    private int throwBoost = 75;
+    private int throwBoost = 175;
 
     public override void OnGrab(Grabber grabber)
     {
-        // Add a fixed joint between this rigidbody and the grabber's rigidbody
+        // Add a fixed joint between this object's rigidbody and the grabber's rigidbody
         joint = gameObject.AddComponent<FixedJoint>();
         joint.connectedBody = grabber.GetComponent<Rigidbody>();
 
@@ -36,8 +36,8 @@ public class Throwable : Grabbable
         averageVelocity /= previousVelocities.Count;
 
         // Apply the calculated average velocity to the rigidbody to move it (with optional boost)
-        GetComponent<Rigidbody>().velocity = averageVelocity * throwBoost;
-
+        GetComponent<Rigidbody>().velocity = averageVelocity * throwBoost; 
+        
     }
 
     public void Update()
@@ -58,5 +58,6 @@ public class Throwable : Grabbable
             // Toss out the oldest sample (dequeue without collecting)
             previousVelocities.Dequeue();
         }
+        
     }
 }

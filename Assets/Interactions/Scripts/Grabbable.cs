@@ -4,31 +4,13 @@ using UnityEngine;
 
 public class Grabbable : MonoBehaviour
 {
-    public Color touchedColour;
-
-    private Color initialColour;
     private Rigidbody rigidBody;
 
-    // Start is called before the first frame update
-    protected virtual void Start()
+    public virtual void Start()
     {
-        // Store the initial colour
-        initialColour = GetComponent<Renderer>().material.color;
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    public void OnTouched()
-    {
-        // Change colour of the object to the touched colour
-        GetComponent<Renderer>().material.color = touchedColour;
-    }
-
-    public void OnUntouched()
-    {
-        // Change the colour back to the initial colour
-        GetComponent<Renderer>().material.color = initialColour;
-
-    }
     public virtual void OnGrab(Grabber grabber)
     {
         // Child this object to the grabber

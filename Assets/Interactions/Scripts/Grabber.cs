@@ -5,40 +5,31 @@ using UnityEngine;
 public class Grabber : MonoBehaviour
 {
     public string gripInputName;
-    // public float gripThreshold;
     public string triggerInputName;
-    // public float triggerThreshold;
 
-    private Grabbable touchedObject;
+    private Touchable touchedObject;
     private Grabbable grabbedObject;
     
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        // If the grip trigger is pressed
+        // If the grip button is pressed
         if (Input.GetButtonDown(gripInputName))
         {
-           // Update the animator to play the grip animation
-           GetComponent<Animator>().SetBool("Gripped", true);
+            // Update the animator to play the grip animation
+            GetComponent<Animator>().SetBool("Gripped", true);
 
-            // If we are touching an object, grab it
-            if(touchedObject != null)
+            // If we are touching an grabbable object, grab it
+            if (grabbedObject != null)
+
             {
                 // Let the touched object know that it has been grabbed
-                touchedObject.OnGrab(this);
-
-                // Store the new grabbed object
-                grabbedObject = touchedObject;
+                grabbedObject.OnGrab(this);
             }
-            
+
         }
+
+        // If the grip button is released
         if(Input.GetButtonUp(gripInputName))
         {
             // Update the animator to stop the grip animation
@@ -47,7 +38,6 @@ public class Grabber : MonoBehaviour
             // If we have something grabbed, drop it
             if (grabbedObject != null)
             {
-
                 // Let the touched object know it has been dropped
                 grabbedObject.OnDrop();
 
@@ -57,6 +47,7 @@ public class Grabber : MonoBehaviour
                 
         }
 
+        // If the trigger button is pressed
         if (Input.GetButtonDown(triggerInputName))
         {
             // If we are grabbing an object, call the trigger function
@@ -66,6 +57,8 @@ public class Grabber : MonoBehaviour
                 grabbedObject.OnTriggerStart();
             }
         }
+
+        // If the trigger button is released
         if(Input.GetButtonUp(triggerInputName))
         {
             // If we have something grabbed, call the stop trigger function
@@ -80,34 +73,43 @@ public class Grabber : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Grabbable grabbable = other.GetComponent<Grabbable>();
-        
-        // Check if the object we touched is grabbable (has the grabbable script on it)
-        if(grabbable != null)
+        // Check if the object we touched is touchable (has the touchable script on it)
+        Touchable touchable = other.GetComponent<Touchable>();
+
+        if (touchable != null)
         {
             // Let the object know it was touched
-            grabbable.OnTouched();
+            touchable.OnTouched();
 
             // Store the currently touched object
-            touchedObject = grabbable;
+            touchedObject = touchable;
+        }
+
+        // Check if the object we touched is grabbable (has the grabbable script on it)
+        Grabbable grabbable = other.GetComponent<Grabbable>();
+
+        if (grabbable != null)
+        {
+            // Store the current grabbable object
+            grabbedObject = grabbable;
         }
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Grabbable grabbable = other.GetComponent<Grabbable>();
 
-        // Check if the object we stopped touching is grabbable (has the grabbable script on it)
-        if (grabbable != null)
+        // Check if the object we stopped touching was touchable (has the touchable script on it) 
+        if (touchedObject != null)
         {
             // Let the object know it is no longer being touched
-            grabbable.OnUntouched();
+            touchedObject.OnUntouched();
 
             // Reset the touched object
             touchedObject = null;
 
         }
+
     }
 
  

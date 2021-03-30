@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class Flashlight : Grabbable
 {
-    public Light light;
+    public Light frontLight;
 
-    protected override void Start()
+    public override void Start()
     {
        base.Start();
-       light.enabled = false;
+        frontLight.enabled = false;
     }
 
     public override void OnTriggerStart()
     {
-        light.enabled = true;
+        frontLight.enabled = true;
     }
 
     public override void OnTriggerEnd()
     {
-        light.enabled = false;
+        frontLight.enabled = false;
     }
 }
