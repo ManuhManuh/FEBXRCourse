@@ -9,6 +9,7 @@ public class Grabber : MonoBehaviour
 
     private Touchable touchedObject;
     private Grabbable grabbedObject;
+    private Pushable pushedObject;
     
     // Update is called once per frame
     void Update()
@@ -73,7 +74,7 @@ public class Grabber : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the object we touched is touchable (has the touchable script on it)
+        // Check if the object we touched is touchable (has the touchable script on it) - this just changes the colour of the object
         Touchable touchable = other.GetComponent<Touchable>();
 
         if (touchable != null)
@@ -94,6 +95,14 @@ public class Grabber : MonoBehaviour
             grabbedObject = grabbable;
         }
 
+        // Check if the object we touched is pushable
+        Pushable pushable = other.GetComponent<Pushable>();
+        if (pushable != null)
+        {
+            pushedObject = pushable;
+            pushable.OnPushed(this);
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -110,6 +119,12 @@ public class Grabber : MonoBehaviour
 
         }
 
+        //Check if the object we stopped touching was pushable (thereby releasing the push)
+        if (pushedObject != null)
+        {
+            pushedObject.OnPushReleased(this);
+            pushedObject = null;
+        }
     }
 
  

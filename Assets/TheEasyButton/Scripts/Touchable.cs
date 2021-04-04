@@ -30,7 +30,7 @@ public class Touchable : MonoBehaviour
         }
     }
 
-    public void OnUntouched()
+    public virtual void OnUntouched()
     {
         if (changeColour)
         {
@@ -39,4 +39,5 @@ public class Touchable : MonoBehaviour
         }
 
     }
+
 }

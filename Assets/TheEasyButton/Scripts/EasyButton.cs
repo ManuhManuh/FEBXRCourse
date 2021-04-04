@@ -28,4 +28,9 @@ public class EasyButton : MonoBehaviour
         // Spawn a new office supply item
         SpawnOfficeSupplies();
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        SpawnOfficeSupplies();
+    }
 }
